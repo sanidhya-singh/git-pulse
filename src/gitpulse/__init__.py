@@ -1,7 +1,7 @@
 from dagster import Definitions
-from gitpulse.jobs import mvp_job
+from gitpulse.jobs import get_github_data
 
 
 GitPulse = Definitions(
-    jobs = [mvp_job]
+    jobs = [get_github_data]
 )

@@ -1,18 +1,14 @@
 from dagster import job
 from gitpulse.ops import (
-    sum_numbers, random_number,
-    populate_asset
+    get_repositories, get_pull_requests
 )
 
 
 @job(metadata={"owner": "Sanidhya Singh"})
-def mvp_job():
+def get_github_data():
     """
-    This job is an MVP for Dagster
+    This Job extracts data from GitHub repos
     """
-    populate_asset(
-        sum_numbers(
-            random_number(),
-            random_number()
-        )
+    get_pull_requests(
+        get_repositories()
     )

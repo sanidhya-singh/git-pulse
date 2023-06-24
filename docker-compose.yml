@@ -12,7 +12,7 @@ services:
 
     environment:
       POSTGRES_USER: dagster
-      POSTGRES_PASSWORD: dagster 
+      POSTGRES_PASSWORD: dagster
     ports:
       - 5432:5432
     networks:
@@ -43,6 +43,7 @@ services:
       POSTGRES_PORT: 5432
       DAGSTER_CURRENT_IMAGE: "dagster_image"
       DAGSTER_MAX_CONCURRENT_RUNS: 5
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
     volumes:
       - .:/opt/app/gitpulse
     networks:
@@ -67,6 +68,7 @@ services:
       POSTGRES_PORT: 5432
       DAGSTER_CURRENT_IMAGE: "dagster_image"
       DAGSTER_MAX_CONCURRENT_RUNS: 5
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
     volumes:
       - .:/opt/app/gitpulse
     networks:
@@ -95,6 +97,7 @@ services:
       POSTGRES_PORT: 5432
       DAGSTER_CURRENT_IMAGE: "dagster_image"
       DAGSTER_MAX_CONCURRENT_RUNS: 5
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
     volumes:
       - .:/opt/app/gitpulse
     networks:

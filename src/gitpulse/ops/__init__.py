@@ -1,38 +1,41 @@
 from dagster import op
-from dagster import AssetMaterialization
-import random
+import os
+from github import Github
+from github import Auth
 
 
 @op
-def random_number(context) -> int:
+def get_repositories(context) -> list:
     """
-    This operation returns a random Integer
-    between 0 & 10
+    This Op returns a list of dictionaries with the repository owner and name as keys
     """
-    number = random.randint(0, 10)
-    return number
-
-
-@op
-def sum_numbers(context, input_1: int, input_2: int) -> int:
-    """
-    This operation sums two Integers given as input and returns the output
-    """
-    sum = input_1 + input_2
-    context.log.info(sum)
-    return sum
+    return [
+        {"repo_owner": "Stability-AI", "repo_name": "stablediffusion"},
+        {"repo_owner": "Stability-AI", "repo_name": "StableLM"},
+        {"repo_owner": "Stability-AI", "repo_name": "StableStudio"},
+    ]
 
 
 @op(out={})
-def populate_asset(context, sum: int):
+def get_pull_requests(context, repos: list):
     """
-    This operation materializes an Asset with the sum as Metadata
+    This Op returns the pull requests in a given repository
     """
-    context.log_event(
-        AssetMaterialization(
-            asset_key="random_numbers_asset",
-            metadata={
-                "value": sum
-            },
-        )
-    )
+    # using an access token
+    auth = Auth.Token(os.environ['GITHUB_TOKEN'])
+
+    # Public Web Github
+    g = Github(auth=auth)
+
+    # loop over the repositories
+    for repo in repos:
+        # Replace 'owner' and 'repo' with the repository details
+        repo = g.get_repo('Stability-AI/stablediffusion')
+
+        # Get the list of pull requests
+        pulls = repo.get_pulls()
+
+        # Iterate over the pull requests and print their titles and URLs
+        for pull in pulls:
+            context.log.info(f"Title: {pull.title}")
+            context.log.info(f"URL: {pull.html_url}")
