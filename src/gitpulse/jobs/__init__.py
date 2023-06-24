@@ -1,5 +1,5 @@
 from dagster import job
-from repo.ops import (
+from gitpulse.ops import (
     sum_numbers, random_number,
     populate_asset
 )

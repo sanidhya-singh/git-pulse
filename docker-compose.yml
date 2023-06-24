@@ -44,7 +44,7 @@ services:
       DAGSTER_CURRENT_IMAGE: "dagster_image"
       DAGSTER_MAX_CONCURRENT_RUNS: 5
     volumes:
-      - .:/opt/app/dagster_mvp
+      - .:/opt/app/gitpulse
     networks:
       - docker_dagster
 
@@ -68,7 +68,7 @@ services:
       DAGSTER_CURRENT_IMAGE: "dagster_image"
       DAGSTER_MAX_CONCURRENT_RUNS: 5
     volumes:
-      - .:/opt/app/dagster_mvp
+      - .:/opt/app/gitpulse
     networks:
       - docker_dagster
   
@@ -96,7 +96,7 @@ services:
       DAGSTER_CURRENT_IMAGE: "dagster_image"
       DAGSTER_MAX_CONCURRENT_RUNS: 5
     volumes:
-      - .:/opt/app/dagster_mvp
+      - .:/opt/app/gitpulse
     networks:
       - docker_dagster
 
