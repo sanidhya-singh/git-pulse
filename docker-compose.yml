@@ -44,6 +44,7 @@ services:
       DAGSTER_CURRENT_IMAGE: "dagster_image"
       DAGSTER_MAX_CONCURRENT_RUNS: 5
       GITHUB_TOKEN: ${GITHUB_TOKEN}
+      MONGO_CONNECTION_STRING: "mongodb://dagster:dagster@mongodb:27017/?authMechanism=DEFAULT"
     volumes:
       - .:/opt/app/gitpulse
     networks:
@@ -69,6 +70,7 @@ services:
       DAGSTER_CURRENT_IMAGE: "dagster_image"
       DAGSTER_MAX_CONCURRENT_RUNS: 5
       GITHUB_TOKEN: ${GITHUB_TOKEN}
+      MONGO_CONNECTION_STRING: "mongodb://dagster:dagster@mongodb:27017/?authMechanism=DEFAULT"
     volumes:
       - .:/opt/app/gitpulse
     networks:
@@ -98,8 +100,22 @@ services:
       DAGSTER_CURRENT_IMAGE: "dagster_image"
       DAGSTER_MAX_CONCURRENT_RUNS: 5
       GITHUB_TOKEN: ${GITHUB_TOKEN}
+      MONGO_CONNECTION_STRING: "mongodb://dagster:dagster@mongodb:27017/?authMechanism=DEFAULT"
     volumes:
       - .:/opt/app/gitpulse
+    networks:
+      - docker_dagster
+
+  mongodb:
+    container_name: mongodb
+    image: arm64v8/mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=dagster
+      - MONGO_INITDB_ROOT_PASSWORD=dagster
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb:/data/db
     networks:
       - docker_dagster
 

@@ -160,4 +160,9 @@ cython_debug/
 #.idea/
 
 
+# ignore mac files
 *.DS_store
+
+# ignore everything inside the mongodb directory
+mongodb/**
+mongodb/**/*
