@@ -4,6 +4,35 @@ from github import Github
 from github import Auth
 from pymongo import MongoClient
 from pymongo import InsertOne
+import pandas as pd
+
+
+@op 
+def init_base_data(context) -> bool:
+    """
+    This Op reads `base_data.csv` containing the repo names to be initialised
+    """
+    # connect to MongoDB collection
+    mongo_client = MongoClient(os.environ["MONGO_CONNECTION_STRING"])
+    mongo_database = mongo_client["GitPulse"]
+    mongo_collection = mongo_database["repos"]
+
+    # truncate collection and write
+    mongo_collection.delete_many({})
+
+    # read data and insert into MongoDB collection
+    base_data = pd.read_csv('gitpulse/data/base_data.csv')
+    for index, row in base_data.iterrows():
+        mongo_collection.insert_one({
+            "repo_owner": row['repo_owner'],
+            "repo_name": row['repo_name']
+        })
+
+    # close MongoDB connection
+    mongo_client.close()
+
+    return True
+
 
 
 @op
@@ -11,11 +40,16 @@ def get_repositories(context) -> list:
     """
     This Op returns a list of dictionaries with the repository owner and name as keys
     """
-    return [
-        {"repo_owner": "Stability-AI", "repo_name": "stablediffusion"},
-        {"repo_owner": "Stability-AI", "repo_name": "StableLM"},
-        {"repo_owner": "Stability-AI", "repo_name": "StableStudio"},
-    ]
+    # connect to MongoDB collection
+    mongo_client = MongoClient(os.environ["MONGO_CONNECTION_STRING"])
+    mongo_database = mongo_client["GitPulse"]
+    mongo_collection = mongo_database["repos"]
+    repos = list(mongo_collection.find())
+    
+    # close MongoDB connection
+    mongo_client.close()
+
+    return repos
 
 
 @op(out={})
@@ -73,6 +107,9 @@ def get_open_pull_requests(context, repos: list):
     # truncate collection and write
     mongo_collection.delete_many({})
     mongo_collection.bulk_write(inserts)
+
+    # close MongoDB connection
+    mongo_client.close()
     
 
 @op(out={})
@@ -130,3 +167,6 @@ def get_closed_pull_requests(context, repos: list):
     # truncate collection and write
     mongo_collection.delete_many({})
     mongo_collection.bulk_write(inserts)
+
+    # close MongoDB connection
+    mongo_client.close()
