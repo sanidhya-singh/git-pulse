@@ -27,4 +27,8 @@ The deployment makes use of different containers running
 - PostgreSQL backend
 - MongoDB
 
-Please navigate to on your favorite browser to see the Dagit UI. The above `docker compose` command also mounted the local GitHub repo to the Docker container, you are now free to make code changes and contribute to ther repo. :) 
+Please navigate to [http://localhost:3000/](http://localhost:3000/) on your favorite browser to see the Dagit UI. The above `docker compose` command also mounted the local GitHub repo to the Docker container, you are now free to make code changes and contribute to the repo. :) 
+
+
+### Repository Names to Track
+Edit the CSV in `src/gitpulse/data` to incldue the repositories you wish to track with GitPulse. Please ensure your GitHub token has the required privileges to be able to access the repos you wish to track.
