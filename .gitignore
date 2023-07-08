@@ -166,3 +166,9 @@ cython_debug/
 # ignore everything inside the mongodb directory
 mongodb/**
 mongodb/**/*
+
+
+src/dagster_home/logs/**
+src/dagster_home/logs/**/*
+src/dagster_home/storage/**
+src/dagster_home/storage/**/*
